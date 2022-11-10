@@ -1,0 +1,61 @@
+programa ejerciciodosiete
+procesos
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  proceso juntarFlor(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+areas
+  area1 : AreaP(2,2,7,7)
+  area2 : AreaP(8,2,13,7)
+  area3 : AreaP(14,2,19,7)
+  areaF : AreaP(1,1,1,1)
+robots
+  robot juntador
+  variables
+    id,flores,av,ca,miCa,miAv:numero
+  comenzar
+    flores:=0
+    miAv:=PosAv {2}
+    miCa:=PosCa {2}
+    repetir 3
+      Random(av,miAv, miAv + 5) 
+      Random(ca,miCa, miCa + 5)
+      Pos(av,ca)
+      juntarFlor(flores)
+      Pos(miAv,miCa)
+    EnviarMensaje(flores,fisca)
+  fin
+  robot fisca
+  variables
+    floresTotales,flores:numero
+  comenzar
+    enviarID
+    repetir 3
+      RecibirMensaje(flores,*)
+      floresTotales := floresTotales + flores
+    Informar('flores-totales',floresTotales)
+  fin
+variables
+  r1 : juntador
+  r2 : juntador
+  r3 : juntador
+  fisca : fisca
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(fisca,areaF)
+  Iniciar(r1,2,2)
+  Iniciar(r2,8,2)
+  Iniciar(r3,14,2)
+  Iniciar(fisca,1,1)
+fin
+

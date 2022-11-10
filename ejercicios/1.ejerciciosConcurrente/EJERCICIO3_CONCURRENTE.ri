@@ -1,0 +1,124 @@
+programa ejercicio1
+areas
+  areaJ : AreaP(20,11,20,11)
+  fuenteF : AreaP(10,12,10,12)
+  fuenteP : AreaP(10,10,10,10)
+  inicioR1: AreaP(11,12,11,12)
+  inicioR3: AreaP(11,10,11,10)
+  recorridoR2: AreaP(13,12,20,12)
+  recorridoR4: AreaP(13,10,20,10)
+  base: AreaPC(12,11,12,11)
+robots
+  robot recolector
+  variables
+    miAv,miCa,id:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(miAv,jefe)
+    RecibirMensaje(miCa,jefe)
+    repetir 7
+      si(id=1)
+        Pos(10,12)
+        tomarFlor
+      sino
+        Pos(10,10)
+        tomarPapel
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      si(id=1)
+        depositarFlor
+      sino
+        depositarPapel
+      Pos(miAv,miCa)
+      LiberarEsquina(12,11)
+    EnviarMensaje(id,jefe)
+  fin
+  robot depositador
+  variables
+    miAv,miCa,id,pasos:numero
+  comenzar
+    pasos:=0
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(miAv,jefe)
+    RecibirMensaje(miCa,jefe)
+    repetir 7
+      pasos:= pasos + 1
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      si(id=2)
+        tomarFlor
+      sino
+        tomarPapel
+      Pos(miAv + pasos,miCa)
+      LiberarEsquina(12,11)
+      si(id=2)
+        depositarFlor
+      sino
+        depositarPapel
+    EnviarMensaje(id,jefe)
+  fin
+  robot jefe
+  variables
+    id,equipo1,equipo2,ganador:numero
+  comenzar
+    {Enviar Id}
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    {Enviar Pos}
+    EnviarMensaje(11,r1)
+    EnviarMensaje(12,r1)
+    {inicio recolector2}
+    EnviarMensaje(11,r3)
+    EnviarMensaje(10,r3)
+    {inicio depositador1}
+    EnviarMensaje(13,r2)
+    EnviarMensaje(12,r2)
+    {inicio depositador2}
+    EnviarMensaje(13,r4)
+    EnviarMensaje(10,r4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)|(id=2)
+        equipo1:= equipo1 + 1
+      sino
+        equipo2:=equipo2 + 1
+      si (equipo1 = 2)
+        ganador:=1
+        equipo2:= -1
+      sino
+        si(equipo2 = 2)
+          ganador:=2
+          equipo1:= -1
+    Informar('equipo-ganador',ganador)
+  fin
+variables
+  jefe : jefe
+  r1 : recolector
+  r2 : depositador
+  r3 : recolector
+  r4 : depositador
+comenzar
+  AsignarArea(r1,fuenteF)
+  AsignarArea(r1,inicioR1)
+  AsignarArea(r1,base)
+  AsignarArea(r3,fuenteP)
+  AsignarArea(r3,inicioR3)
+  AsignarArea(r3,base)
+  {depositadores}
+  AsignarArea(r2,recorridoR2)
+  AsignarArea(r2,base)
+  AsignarArea(r4,recorridoR4)
+  AsignarArea(r4,base)
+  {jefe}
+  AsignarArea(jefe,areaJ)
+  {iniciar jefe}
+  Iniciar(jefe,20,11)
+  {recolectores}
+  Iniciar(r1,11,12)
+  Iniciar(r3,11,10)
+  {depositadores}
+  Iniciar(r2,13,12)
+  Iniciar(r4,13,10)
+fin

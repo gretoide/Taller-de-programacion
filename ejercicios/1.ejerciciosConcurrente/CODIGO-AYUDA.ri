@@ -1,0 +1,28 @@
+ {PROCESO DE MAXIMOS} 
+  proceso maximo(E idRecibido:numero; E cantFlores; ES max:numero; ES idGanador)
+  comenzar
+    si(cantFlores > max)
+      max:=cantFlores
+      idGanador:=idRecibido
+  fin
+{PROCEOSO DE ENVIAR ID}
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+{DETERMINAR QUIEN FUE EL GANADOR}
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,r1)
+        maximo(id,flores,max,idGanador)
+      sino
+        si(id=2)
+          RecibirMensaje(flores,r2)
+          maximo(id,flores,max,idGanador)
+      sino
+        si(id=3)
+          RecibirMensaje(flores,r1)
+          maximo(id,flores,max,idGanador)

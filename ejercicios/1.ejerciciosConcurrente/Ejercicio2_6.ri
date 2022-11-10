@@ -1,0 +1,95 @@
+programa ejerciciodoscuatro
+procesos
+  proceso juntarFlor(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso rectangulo (ES flores:numero ; E ancho:numero ; E alto: numero)
+  comenzar
+    repetir 2
+      repetir alto
+        juntarFlor(flores)
+        mover
+      derecha
+      repetir ancho
+        juntarFlor(flores)
+        mover
+      derecha
+  fin
+  proceso maximo(E flores:numero; E id:numero; ES idMax:numero; ES max:numero)
+  comenzar
+    si(flores>max)
+      max:=flores
+      idMax:=id
+  fin
+areas
+  area1 : AreaP(2,2,5,7)
+  area2 : AreaP(6,2,11,10)
+  area3 : AreaP(1,1,1,1)
+robots
+  robot juntador
+  variables
+    flores,id,ancho,alto:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(alto,jefe)
+    RecibirMensaje(ancho,jefe)
+    rectangulo(flores,ancho,alto)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(flores,jefe)
+  fin
+  robot jefe
+  variables
+    alto:numero
+    ancho:numero
+    id:numero
+    flores:numero
+    robotMax:numero
+    max:numero
+  comenzar
+    max:=-1
+    {mandamos a r1}
+    EnviarMensaje(1,r1)
+    Random(alto,1,5)
+    Random(ancho,1,3)
+    EnviarMensaje(alto,r1)
+    EnviarMensaje(ancho,r1)
+    {mandamos datos a r2}
+    EnviarMensaje(2,r2)
+    Random(alto,1,8)
+    Random(ancho,1,5)
+    EnviarMensaje(alto,r2)
+    EnviarMensaje(ancho,r2)
+    repetir 2
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(flores,r1)
+        maximo(flores,id,robotMax,max)
+        Informar(id)
+        Informar(flores)
+      sino
+        si(id = 2)
+          RecibirMensaje(flores,r2)
+          maximo(flores,id,robotMax,max)
+          Informar(id)
+          Informar(flores)
+    Informar(robotMax)
+  fin
+variables
+  jefe : jefe
+  r1 : juntador
+  r2 : juntador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(jefe,area3)
+  Iniciar(r1, 2, 2)
+  Iniciar(r2, 6, 2)
+  Iniciar(jefe,1,1)
+fin
+
+
+

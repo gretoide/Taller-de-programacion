@@ -1,0 +1,117 @@
+programa ejercicio1
+procesos
+  proceso maximo(E idRecibido:numero; E cantFlores:numero; ES max:numero; ES idGanador:numero)
+  comenzar
+    si(cantFlores > max)
+      max:=cantFlores
+      idGanador:=idRecibido
+  fin
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+areas
+  areaD : AreaPC(15,23,15,23)
+  area1 : AreaP(9,9,9,9)
+  area2 : AreaP(11,9,11,9)
+  area3 : AreaP(13,9,13,9)
+  areaJefe : AreaP(1,1,1,1)
+  areaFinal : AreaC(20,20,20,20)
+robots
+  robot juntador
+  variables
+    flores,miCa,miAv,id:numero
+    ok,soy:boolean
+  comenzar
+    flores:=0
+    miAv:=PosAv
+    miCa:=PosCa
+    ok:=F
+    RecibirMensaje(id,jefe)
+    mientras(~ok)
+      BloquearEsquina(15,23)
+      Pos(15,23)
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+        Pos(miAv,miCa)
+        LiberarEsquina(15,23)
+      sino
+        si(~HayFlorEnLaEsquina)
+          Pos(miAv,miCa)
+          LiberarEsquina(15,23)
+          ok:=V
+    {le envia el id y las flores al jefe}
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(flores,jefe)
+    {espera a recibir si es el gandador}
+    RecibirMensaje(soy,jefe)
+    si(soy)
+      Pos(20,20)
+      mientras(HayFlorEnLaBolsa)
+        depositarFlor
+  fin
+  robot jefe
+  variables
+    ok:boolean
+    idGanador,flores,id,max:numero
+  comenzar
+    max:=-1
+    ok:=V
+    enviarID
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,r1)
+        maximo(id,flores,max,idGanador)
+      sino
+        si(id=2)
+          RecibirMensaje(flores,r2)
+          maximo(id,flores,max,idGanador)
+        sino
+          si(id=3)
+            RecibirMensaje(flores,r3)
+            maximo(id,flores,max,idGanador)
+    {LE ENVIAMOS AL GANADOR EL OK PARA QUE VAYA A DEPOSITAR
+    Y A LOS OTROS LE ENVIAMOS FALSO PARA QUE NO SE QUEDEN ESPERANDO}
+    si(idGanador=1)
+      EnviarMensaje(ok,r1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(F,r3)
+    sino
+      si(idGanador=2)
+        EnviarMensaje(ok,r2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(F,r3)
+      sino
+        si(idGanador=3)
+          EnviarMensaje(ok,r3)
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+  fin
+variables
+  r1 : juntador
+  r2 : juntador
+  r3 : juntador
+  jefe : jefe
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r1,areaD)
+  AsignarArea(r2,areaD)
+  AsignarArea(r3,areaD)
+  AsignarArea(jefe,areaJefe)
+  AsignarArea(r1,areaFinal)
+  AsignarArea(r2,areaFinal)
+  AsignarArea(r3,areaFinal)
+  Iniciar(r1,9,9)
+  Iniciar(r2,11,9)
+  Iniciar(r3,13,9)
+  Iniciar(jefe,1,1)
+fin
+
+
+

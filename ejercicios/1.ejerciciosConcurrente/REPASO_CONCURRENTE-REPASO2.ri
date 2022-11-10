@@ -1,0 +1,121 @@
+programa ejercicio1
+procesos
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso enviarAreas
+  comenzar
+    {r1}
+    EnviarMensaje(5,r1)
+    EnviarMensaje(5,r1)
+    {r2}
+    EnviarMensaje(20,r2)
+    EnviarMensaje(5,r2)
+    {r3}
+    EnviarMensaje(25,r3)
+    EnviarMensaje(5,r3)
+    {r4}
+    EnviarMensaje(40,r4)
+    EnviarMensaje(5,r4)
+  fin
+  proceso juntarFlor
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso juntarPapel
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  areaJ : AreaP(1,1,1,1)
+  areaIni : AreaPC(2,1,3,1)
+  areaIni2 : AreaPC(4,1,5,1)
+  area1 : AreaPC(5,5,20,15)
+  area2 : AreaPC(25,5,40,15)
+robots
+  robot florero
+  variables
+    id,av,ca:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    juntarFlor
+    mover
+    LiberarEsquina(av,ca)
+    repetir 9
+      juntarFlor
+      mover
+    EnviarMensaje(id,jefe)
+  fin
+  robot papelero
+  variables
+    id,av,ca:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    Pos(av,ca)
+    repetir 3
+      derecha
+    repetir 13
+      juntarPapel
+      mover
+    BloquearEsquina(av,ca)
+    mover
+    juntarPapel
+    LiberarEsquina(av,ca)
+    EnviarMensaje(id,jefe)
+  fin
+  robot jefe
+  variables
+    ganador,equipo1,contador,equipo2,id:numero
+  comenzar
+    enviarID
+    enviarAreas
+    contador:=0
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)|(id=2)
+        equipo1:= equipo1 + 1
+      sino
+        equipo2:=equipo2 + 1
+      si (equipo1 = 2)
+        ganador:=1
+        equipo2:= -1
+      sino
+        si(equipo2 = 2)
+          ganador:=2
+          equipo1:= -1
+    Informar('equipo-ganador',ganador)
+  fin
+variables
+  r1: florero
+  r2: papelero
+  r3: florero
+  r4: papelero
+  jefe : jefe
+comenzar
+  AsignarArea(r1,areaIni)
+  AsignarArea(r2,areaIni)
+  AsignarArea(r3,areaIni2)
+  AsignarArea(r4,areaIni2)
+  AsignarArea(jefe,areaJ)
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area1)
+  AsignarArea(r3,area2)
+  AsignarArea(r4,area2)
+  Iniciar(r1,2,1)
+  Iniciar(r2,3,1)
+  Iniciar(r3,4,1)
+  Iniciar(r4,5,1)
+  Iniciar(jefe,1,1)
+fin

@@ -1,0 +1,215 @@
+programa ejercicio1
+procesos
+  proceso maximo(E idRecibido:numero; E cantFlores:numero; ES max:numero; ES idGanador:numero)
+  comenzar
+    si(cantFlores > max)
+      max:=cantFlores
+      idGanador:=idRecibido
+  fin
+  proceso lateralSuperior(ES flores:numero; E ok:boolean; E miC:numero)
+  comenzar
+    repetir 9
+      juntarFlor(flores)
+      BloquearEsquina(PosAv,PosCa - 1)
+      Pos(PosAv, PosCa - 1)
+      mientras(HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(PosAv,PosCa + 1)
+      si(miC = 2)
+        EnviarMensaje(ok,r2)
+      sino
+        EnviarMensaje(ok,r5)
+      LiberarEsquina(PosAv, PosCa - 1)
+      mover
+  fin
+  proceso lateralInferior(ES flores:numero; E ok:boolean; E miC:numero )
+  comenzar
+    repetir 9
+      juntarFlor(flores)
+      BloquearEsquina(PosAv,PosCa + 1)
+      Pos(PosAv, PosCa + 1)
+      mientras(HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(PosAv,PosCa - 1)
+      si(miC = 2)
+        EnviarMensaje(ok,r2)
+      sino
+        EnviarMensaje(ok,r5)
+      LiberarEsquina(PosAv, PosCa + 1)
+      mover
+  fin  
+  proceso juntarFlor(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+areas
+  final : AreaPC(20,20,20,20)
+  equipo1 : AreaPC(10,19,19,21)
+  equipo2 : AreaPC(21,19,30,21)
+  areaJ : AreaP(20,18,20,18)
+  ini1 : AreaPC(9,19,9,21)
+  ini2 : AreaPC(31,19,31,21)
+robots
+  robot lateral
+  variables
+    miAv,miCa,id,flores,miC:numero
+    ok:boolean
+  comenzar
+    ok:=V
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(miAv, jefe)
+    RecibirMensaje(miCa, jefe)
+    RecibirMensaje(miC,jefe) {recibe su compaÃ±ero central}
+    si(id = 1)
+      Pos(miAv + 1,miCa)
+      derecha
+      lateralInferior(flores,ok,miC)
+    sino
+      si(id = 3)
+        Pos(miAv + 1,miCa)
+        derecha
+        lateralSuperior(flores,ok,miC)
+      sino
+        si(id = 6)
+          Pos(miAv - 1,miCa)
+          repetir 3
+            derecha
+          lateralSuperior(flores,ok,miC)
+        sino
+          si(id = 4)
+            Pos(miAv - 1,miCa)
+            repetir 3
+              derecha
+            lateralInferior(flores,ok,miC)
+  fin
+  robot central
+  variables
+    miAv,miCa,id,flores:numero
+    ok:boolean
+  comenzar
+    RecibirMensaje(id,jefe)
+    RecibirMensaje(miAv,jefe)
+    RecibirMensaje(miCa,jefe)
+    ok:=V
+    si(id = 5)
+      repetir 3
+        derecha
+      repetir 9
+        RecibirMensaje(ok,r3)
+        RecibirMensaje(ok,r6)
+        si(ok)
+          mover
+          juntarFlor(flores)     
+    sino
+      derecha
+      repetir 9
+        RecibirMensaje(ok,r1)
+        RecibirMensaje(ok,r3)
+        si(ok)   
+          mover
+          juntarFlor(flores)
+    EnviarMensaje(id,jefe)
+    BloquearEsquina(20,20)
+    Pos(20,20)
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(miAv,miCa)
+    LiberarEsquina(20,20)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(flores,jefe)
+  fin
+  robot jefe
+  variables
+    equipo,equipo1, equipo2, ganador, flores, max, id:numero
+  comenzar
+    {r1}
+    EnviarMensaje(1,r1)
+    EnviarMensaje(9,r1)
+    EnviarMensaje(19,r1)
+    EnviarMensaje(2,r1)
+    {r2} {central}
+    EnviarMensaje(2,r2)
+    EnviarMensaje(9,r2)
+    EnviarMensaje(20,r2)
+    {r3}
+    EnviarMensaje(3,r3)
+    EnviarMensaje(9,r3)
+    EnviarMensaje(21,r3)
+    EnviarMensaje(2,r3)
+    {r4} 
+    EnviarMensaje(4,r4)
+    EnviarMensaje(31,r4)
+    EnviarMensaje(19,r4)
+    EnviarMensaje(5,r4) {le envio su central}
+    {r5} {central}
+    EnviarMensaje(5,r5)
+    EnviarMensaje(31,r5)
+    EnviarMensaje(20,r5)
+    {r6}
+    EnviarMensaje(6,r6)
+    EnviarMensaje(31,r6)
+    EnviarMensaje(21,r6)
+    EnviarMensaje(5,r6) {le envio su central}
+    max:=-1
+    repetir 2
+      RecibirMensaje(id,*)
+      si(id = 2)
+        equipo1:= equipo1 + 1
+        equipo:=1
+        RecibirMensaje(flores,r2)
+      sino
+        equipo2:=equipo2 + 1
+        equipo:=2
+        RecibirMensaje(flores,r5)
+      si (equipo1 = 2)
+        ganador:=1
+        equipo2:= -1
+      sino
+        si(equipo2 = 2)
+          ganador:=2
+          equipo1:= -1
+    Informar('equipo-ganador',ganador)      
+    Maximo(equipo,flores,max,ganador) {para implementar}
+  fin
+variables
+  r1 : lateral
+  r2 : central
+  r3 : lateral
+  r4 : lateral
+  r5 : central
+  r6 : lateral
+  jefe : jefe
+comenzar
+  AsignarArea(r1,equipo1)
+  AsignarArea(r2,equipo1)
+  AsignarArea(r3,equipo1)
+  AsignarArea(r4,equipo2)
+  AsignarArea(r5,equipo2)
+  AsignarArea(r6,equipo2)
+  {inicio}
+  AsignarArea(r1,ini1)
+  AsignarArea(r2,ini1)
+  AsignarArea(r3,ini1)
+  AsignarArea(r4,ini2)
+  AsignarArea(r5,ini2)
+  AsignarArea(r6,ini2)
+  {centrales}
+  AsignarArea(r3,final)
+  AsignarArea(r5,final)
+  {jefe}
+  AsignarArea(jefe,areaJ)
+  {iniciar jefe}
+  Iniciar(jefe,20,18)
+  {laterales}
+  Iniciar(r1,9,19)
+  Iniciar(r3,9,21)
+  Iniciar(r4,31,19)
+  Iniciar(r6,31,21)
+  {centrales}
+  Iniciar(r2,9,20)
+  Iniciar(r5,31,20)
+  {bueno profe, me falta encontrar en donde le estoy pifiando, pero traté de maximizar la concurrencia}
+fin
+

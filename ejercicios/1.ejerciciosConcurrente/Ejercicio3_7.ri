@@ -1,0 +1,46 @@
+programa ejercicio1
+areas
+  areaD : AreaC(15,23,15,23)
+  area1 : AreaP(9,9,9,9)
+  area2 : AreaP(11,9,11,9)
+  area3 : AreaP(13,9,13,9)
+robots
+  robot juntador
+  variables
+    flores,miCa,miAv:numero
+    ok:boolean
+  comenzar
+    flores:=0
+    miAv:=PosAv
+    miCa:=PosCa
+    ok:=F
+    mientras(~ok)
+      BloquearEsquina(15,23)
+      Pos(15,23)
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+        Pos(miAv,miCa)
+        LiberarEsquina(15,23)
+      sino
+        si(~HayFlorEnLaEsquina)
+          Pos(miAv,miCa)
+          LiberarEsquina(15,23)
+          ok:=V
+    Informar('cant-flores',flores)
+  fin
+variables
+  r1 : juntador
+  r2 : juntador
+  r3 : juntador
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r1,areaD)
+  AsignarArea(r2,areaD)
+  AsignarArea(r3,areaD)
+  Iniciar(r1,9,9)
+  Iniciar(r2,11,9)
+  Iniciar(r3,13,9)
+fin

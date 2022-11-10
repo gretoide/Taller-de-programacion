@@ -1,0 +1,7 @@
+programa ejercicio1
+procesos    
+areas
+robots
+variables
+comenzar
+fin

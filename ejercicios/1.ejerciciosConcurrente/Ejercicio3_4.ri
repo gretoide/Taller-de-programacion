@@ -1,0 +1,66 @@
+programa ejerciciotrescinco
+procesos
+  proceso juntarFlor
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso rectangulo(E alto:numero; E ancho:numero)
+  comenzar
+    repetir 2
+      repetir alto
+        juntarFlor
+        mover
+      derecha
+      repetir ancho
+        juntarFlor
+        mover
+      derecha
+  fin
+areas
+  area1 : AreaP(15,15,30,35)
+  area2 : AreaP(40,40,55,60)
+  areaF : AreaPC(10,10,10,10)
+  areaJ : AreaP(1,1,1,1)
+	areaInicio1 : AreaP(2,2,2,2)
+	areaInicio2 : AreaP(6,6,6,6)
+robots
+  robot juntador
+  variables
+    alto,ancho,miAv,miCa:numero
+  comenzar
+    miAv:=PosAv
+    miCa:=PosCa
+    RecibirMensaje(alto,jefe)
+    RecibirMensaje(ancho,jefe)
+    rectangulo(alto,ancho)
+    mientras(HayFlorEnLaBolsa)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(miAv,miCa)
+      LiberarEsquina(10,10)
+  fin
+  robot jefe
+  variables
+    alto,ancho:numero
+  comenzar
+    EnviarMensaje(20,r1)
+    EnviarMensaje(15,r1)
+    EnviarMensaje(20,r2)
+    EnviarMensaje(15,r2)
+  fin
+variables
+  r1 : juntador
+  r2 : juntador
+  jefe : jefe
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r1,areaF)
+  AsignarArea(r2,areaF)
+  AsignarArea(jefe,areaJ)
+  Iniciar(r1,15,15)
+  Iniciar(r2,40,40)
+  Iniciar(jefe,1,1)
+fin

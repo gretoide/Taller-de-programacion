@@ -1,0 +1,42 @@
+programa ejercicio1
+
+procesos
+  proceso juntarFlor(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin
+  proceso rectangulo(ES flor:numero)
+  variables
+    alto,ancho:numero
+  comenzar
+    ancho:=3
+    alto:=5
+    repetir 2
+      repetir alto
+        juntarFlor(flor)
+        mover     
+      derecha
+      repetir ancho
+        juntarFlor(flor)
+        mover
+      derecha
+  fin     
+areas
+  area: AreaP(2,5,5,7)
+robots
+  robot tipo1
+  variables
+    flor:numero
+  comenzar
+    flor:=0
+    rectangulo(flor)
+    Informar(flor)
+  fin
+variables
+  robot1 : tipo1
+comenzar
+  AsignarArea(robot1,area)
+  Iniciar(robot1,2,2)
+fin

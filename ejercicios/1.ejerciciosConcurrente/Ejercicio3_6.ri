@@ -1,0 +1,90 @@
+programa ejerciciotrescuatro
+procesos
+  proceso juntarFlor
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso rectangulo(E alto:numero; E ancho:numero)
+  comenzar
+    repetir 2
+      repetir alto
+        juntarFlor
+        mover
+      derecha
+      repetir ancho
+        juntarFlor
+        mover
+      derecha
+  fin
+areas
+  area1 : AreaP(15,15,30,35)
+  area2 : AreaP(40,40,55,60)
+  areaF : AreaC(10,10,10,10)
+  areaJ : AreaP(1,1,1,1)
+  areaInicio1 : AreaP(2,2,2,2)
+  areaInicio2 : AreaP(6,6,6,6)
+robots
+  robot juntador
+  variables
+    alto,ancho,miAv,miCa:numero
+    final:boolean
+  comenzar
+    final:=V
+    RecibirMensaje(miAv,jefe)
+    miCa:=miAv
+    Pos(miAv,miCa)
+    RecibirMensaje(alto,jefe)
+    RecibirMensaje(ancho,jefe)
+    rectangulo(alto,ancho)
+    mientras(HayFlorEnLaBolsa)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(miAv,miCa)
+      LiberarEsquina(10,10)
+    EnviarMensaje(final,jefe)
+  fin
+  robot jefe
+  variables
+    alto,ancho,floresTot:numero
+    final:boolean
+  comenzar
+    {enviar esquina de inicio}
+    EnviarMensaje(15,r1)
+    EnviarMensaje(40,r2)
+    {alto random del rectangulo}
+    Random(alto,1,20)
+    EnviarMensaje(alto,r1)
+    EnviarMensaje(15,r1)
+    Random(alto,1,20)
+    EnviarMensaje(alto,r2)
+    EnviarMensaje(15,r2)
+    EnviarMensaje(40,r2)
+    RecibirMensaje(final,r1)
+    RecibirMensaje(final,r2)
+    Pos(10,10)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      floresTot:= floresTot + 1
+    Informar('flores-totales',floresTot)
+  fin
+variables
+  r1 : juntador
+  r2 : juntador
+  jefe : jefe
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r1,areaF)
+  AsignarArea(r2,areaF)
+  AsignarArea(jefe,areaF)
+  AsignarArea(jefe,areaJ)
+  AsignarArea(r1,areaInicio1)
+  AsignarArea(r2,areaInicio2)
+  Iniciar(r1,2,2)
+  Iniciar(r2,6,6)
+  Iniciar(jefe,1,1)
+fin
+
+
