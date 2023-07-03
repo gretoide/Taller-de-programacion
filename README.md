@@ -1,11 +1,16 @@
-<p align = "center"><h1># SI107 Taller de Programación</h1>
-<br>
- <img src = "https://a.pinatafarm.com/312x296/ae7f8ccd22/sad-thumbs-up-cat.jpg/m/522x0">
+# Taller de Programación
+Materia 'Taller de Programación' de la Facultad de Informática de La Plata, materia del segundo semestre de primer año.
 
-</p>
-ejercicios, teorías y demás sobre la cursada de taller de programación 
-<hr>
 
-<b>recomendación:</b> usen la extensión <a href="https://marketplace.visualstudio.com/items?itemName=juanm04.rinfo-unlp">.ri</a> en visual studio, con las tabulaciones a 2 (importante! ya que sino no reconoce la sintaxis).
- r-info no perimte ctrl+v ni ctrl+c, y menos que menos ctrl+z!
+| Categoría            | Enlace                                                         |
+|----------------------|----------------------------------------------------------------|
+| Imperativo           | [Enlace a Imperativo](https://github.com/gretoide/Taller-de-programacion/tree/master/ejercicios/2.ejerciciosImperativo)       |
+| Orientado a Objetos  | [Enlace a Orientado a Objetos](https://github.com/gretoide/Taller-de-programacion/tree/master/ejercicios/3.ejerciciosObjetos)      |
+| Concurrente          | [Enlace a Concurrente](https://github.com/gretoide/Taller-de-programacion/tree/master/ejercicios/1.ejerciciosConcurrente)    |
 
+## Recursos
+- [Free Pascal](https://www.freepascal.org/download.html)
+- [Geany](https://www.geany.org/download/releases/)
+- [.ri](https://marketplace.visualstudio.com/items?itemName=lafuenteunlp.lf-rinfo)
+ ### [![UNLP](https://img.shields.io/badge/UNLP-Universidad%20Nacional%20de%20La%20Plata-blue)](https://www.unlp.edu.ar/)
+ 
